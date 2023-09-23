@@ -63,7 +63,7 @@ onUnmounted(() => window.removeEventListener('resize', onWidthChange))
 
 <template>
   <div
-    class="shadow-md h-[80px] pt-4 px-5 pb-3 flex flex-row justify-between items-center text-base"
+    class="shadow-md h-[80px] pt-4 px-5 pb-3 sm:px-2 flex flex-row justify-between items-center text-base"
   >
     <div class="lg:hidden xl:hidden 2xl:hidden bg-inherit">
       <Sidebar v-model:visible="visible" class="w-[200px] h-full bg-[#053D41] text-white p-4">
@@ -77,7 +77,7 @@ onUnmounted(() => window.removeEventListener('resize', onWidthChange))
         />
       </div>
     </div>
-    <div class="flex flex-row gap-2 items-center px-5 text-base font-semibold">
+    <div class="flex flex-row gap-2 items-center px-5 text-base font-semibold sm:p-0">
       <div class="sm:hidden md:hidden">
         <SvgIcon type="mdi" :path="mdiHospitalBuilding"></SvgIcon>
       </div>
@@ -87,7 +87,7 @@ onUnmounted(() => window.removeEventListener('resize', onWidthChange))
         :options="branchesOptions"
         option-label="label"
         placeholder="Pilih Cabang"
-        class="w-full md:w-14rem bg-white p-4 text-base font-normal"
+        class="w-full md:w-14rem bg-white p-4 text-base sm:text-xs md:text-sm font-normal"
       >
         <template #header>
           <div class="mt-2 mb-4 font-semibold">Data Cabang</div>
@@ -114,73 +114,65 @@ onUnmounted(() => window.removeEventListener('resize', onWidthChange))
       </Dropdown>
     </div>
     <div class="flex flex-row gap-[20px] items-center">
-      <div>
-        <Button class="bg-inherit text-inherit p-0" @click="toggle">
-          <SvgIcon
-            :size="windowWidth < 500 ? '18px' : '24px'"
-            type="mdi"
-            :path="mdiBell"
-            aria-haspopup="true"
-            aria-controls="overlay_menu"
-          ></SvgIcon
-        ></Button>
-        <Menu
-          style="position: absolute; top: 80px; right: 10px; left: auto"
-          ref="menu"
-          id="overlay_menu"
-          :model="items"
-          :popup="true"
-        >
-          <template #start>
-            <div>
-              <div class="font-semibold border-b pb-4 px-5">Notifikasi</div>
+      <Button class="bg-inherit text-inherit p-0" @click="toggle">
+        <SvgIcon
+          :size="windowWidth < 500 ? '18px' : '24px'"
+          type="mdi"
+          :path="mdiBell"
+          aria-haspopup="true"
+          aria-controls="overlay_menu"
+        ></SvgIcon
+      ></Button>
+      <Menu
+        style="position: absolute; top: 80px; right: 10px; left: auto"
+        ref="menu"
+        id="overlay_menu"
+        :model="items"
+        :popup="true"
+      >
+        <template #start>
+          <div>
+            <div class="font-semibold border-b pb-4 px-5">Notifikasi</div>
+          </div>
+        </template>
+        <template #item="{ item, label, props }">
+          <div class="flex flex-row justify-between gap-5 w-full items-center">
+            <div class="font-semibold p-2 bg-gray-200 text-gray-600 rounded-md sm:hidden md:hidden">
+              <SvgIcon type="mdi" :path="item.icon" size="24px"></SvgIcon>
             </div>
-          </template>
-          <template #item="{ item, label, props }">
-            <div class="flex flex-row justify-between gap-5 w-full items-center">
-              <div
-                class="font-semibold p-2 bg-gray-200 text-gray-600 rounded-md sm:hidden md:hidden"
-              >
-                <SvgIcon type="mdi" :path="item.icon" size="24px"></SvgIcon>
-              </div>
-              <div
-                class="font-semibold p-2 bg-gray-200 text-gray-600 rounded-md 2xl:hidden xl:hidden lg:hidden"
-              >
-                <SvgIcon type="mdi" :path="item.icon" size="18px"></SvgIcon>
-              </div>
-              <div
-                class="flex-col flex items-start w-[280px] sm:w-[200px] md:w-[200px] sm:text-xs md:text-sm lg:text-sm"
-              >
-                <div class="font-semibold">{{ label }}</div>
-                <div>{{ item?.description }}</div>
-              </div>
-              <div
-                class="text-base sm:text-xs md:text-sm lg:text-sm w-[60px] sm:w-[50px] md:w-[50px]"
-              >
-                {{ item?.date }}
-              </div>
+            <div
+              class="font-semibold p-2 bg-gray-200 text-gray-600 rounded-md 2xl:hidden xl:hidden lg:hidden"
+            >
+              <SvgIcon type="mdi" :path="item.icon" size="18px"></SvgIcon>
             </div>
-          </template>
-        </Menu>
-      </div>
-      <div v-if="windowWidth > 445">
-        <Button class="bg-inherit text-inherit p-0">
-          <SvgIcon
-            type="mdi"
-            :path="mdiHelpCircle"
-            :size="windowWidth < 500 ? '18px' : '24px'"
-          ></SvgIcon
-        ></Button>
-      </div>
-      <div>
-        <img
-          alt="user header"
-          :src="'https://i.ibb.co/hDMmmZD/foto-almas.jpg'"
-          :class="windowWidth < 500 ? 'h-[32px] w-[32px]' : 'h-[48px] w-[48px]'"
-          class="rounded-full"
-          style="object-fit: cover"
-        />
-      </div>
+            <div
+              class="flex-col flex items-start w-[280px] sm:w-[200px] md:w-[200px] sm:text-xs md:text-sm lg:text-sm"
+            >
+              <div class="font-semibold">{{ label }}</div>
+              <div>{{ item?.description }}</div>
+            </div>
+            <div
+              class="text-base sm:text-xs md:text-sm lg:text-sm w-[60px] sm:w-[50px] md:w-[50px]"
+            >
+              {{ item?.date }}
+            </div>
+          </div>
+        </template>
+      </Menu>
+      <Button v-if="windowWidth > 445" class="bg-inherit text-inherit p-0">
+        <SvgIcon
+          type="mdi"
+          :path="mdiHelpCircle"
+          :size="windowWidth < 500 ? '18px' : '24px'"
+        ></SvgIcon
+      ></Button>
+      <img
+        alt="user header"
+        :src="'https://i.ibb.co/hDMmmZD/foto-almas.jpg'"
+        :class="windowWidth < 500 ? 'h-[32px] w-[32px]' : 'h-[48px] w-[48px]'"
+        class="rounded-full"
+        style="object-fit: cover"
+      />
       <div v-if="windowWidth > 620" class="flex flex-col text-sm max-[498px]:hidden">
         <div class="font-semibold">Almas Utami</div>
         <div>Frontend Developer</div>

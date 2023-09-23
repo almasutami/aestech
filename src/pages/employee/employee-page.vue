@@ -4,7 +4,7 @@ import CardLayout from '@/components/container-layout.vue'
 import ProfileCard from '@/components/employee/profile-card.vue'
 import EmployeeTabMenu from '@/components/employee/tab-menu.vue'
 import { employeeStore } from '@/stores/employee'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useToast } from 'primevue/usetoast'
 const toast = useToast()
 
@@ -33,6 +33,31 @@ onMounted(async () => {
   }
   loading.value = false
 })
+
+// responsive styles
+const containerFlexRowStyle = 'grid grid-cols-6 items-center'
+const containerTwoRowsSyle = 'grid grid-cols-1 items-center'
+const containerStyle = computed(() => {
+  return windowWidth.value > 375 ? containerFlexRowStyle : containerTwoRowsSyle
+})
+
+const titleFlexRowStyle = 'col-start-1 col-span-2 font-semibold'
+const titleTwoRowsSyle = 'col-span-1 font-semibold mb-1'
+const titleStyle = computed(() => {
+  return windowWidth.value > 375 ? titleFlexRowStyle : titleTwoRowsSyle
+})
+
+const dataFlexRowStyle = 'col-start-3 col-span-4'
+const dataTwoRowsSyle = 'col-span-1 mb-2'
+const dataStyle = computed(() => {
+  return windowWidth.value > 375 ? dataFlexRowStyle : dataTwoRowsSyle
+})
+
+let windowWidth = ref(window.innerWidth)
+
+const onWidthChange = () => (windowWidth.value = window.innerWidth)
+onMounted(() => window.addEventListener('resize', onWidthChange))
+onUnmounted(() => window.removeEventListener('resize', onWidthChange))
 </script>
 
 <template>
@@ -52,21 +77,21 @@ onMounted(async () => {
         <div class="row-span-3 bg-white p-5 sm:p-3 border border-gray-100 shadow-md rounded-md">
           <div>
             <div class="w-full flex flex-col gap-3 py-3 px-4">
-              <div class="grid grid-cols-6 items-center">
-                <div class="col-start-1 col-span-2 font-semibold">ID Pegawai</div>
-                <div v-if="!loading" class="col-start-3 col-span-4">{{ selectedEmployee?.id }}</div>
-                <div v-if="loading" class="col-start-3 col-span-4"><Skeleton /></div>
+              <div :class="containerStyle">
+                <div :class="titleStyle">ID Pegawai</div>
+                <div v-if="!loading" :class="dataStyle">{{ selectedEmployee?.id }}</div>
+                <div v-if="loading" :class="dataStyle"><Skeleton /></div>
               </div>
-              <div class="grid grid-cols-6 items-center">
-                <div class="col-start-1 col-span-2 font-semibold">Nama Pegawai</div>
-                <div v-if="!loading" class="col-start-3 col-span-4">
+              <div :class="containerStyle">
+                <div :class="titleStyle">Nama Pegawai</div>
+                <div v-if="!loading" :class="dataStyle">
                   {{ selectedEmployee?.fullname }}
                 </div>
-                <div v-if="loading" class="col-start-3 col-span-4"><Skeleton /></div>
+                <div v-if="loading" :class="dataStyle"><Skeleton /></div>
               </div>
-              <div class="grid grid-cols-6 items-center">
-                <div class="col-start-1 col-span-2 font-semibold">Jenis Kelamin</div>
-                <div v-if="!loading" class="col-start-3 col-span-4">
+              <div :class="containerStyle">
+                <div :class="titleStyle">Jenis Kelamin</div>
+                <div v-if="!loading" :class="dataStyle">
                   {{
                     selectedEmployee?.gender === 'L'
                       ? 'Laki-Laki'
@@ -75,28 +100,28 @@ onMounted(async () => {
                       : ''
                   }}
                 </div>
-                <div v-if="loading" class="col-start-3 col-span-4"><Skeleton /></div>
+                <div v-if="loading" :class="dataStyle"><Skeleton /></div>
               </div>
-              <div class="grid grid-cols-6 items-center">
-                <div class="col-start-1 col-span-2 font-semibold">Tanggal Lahir</div>
-                <div v-if="!loading" class="col-start-3 col-span-4">
+              <div :class="containerStyle">
+                <div :class="titleStyle">Tanggal Lahir</div>
+                <div v-if="!loading" :class="dataStyle">
                   {{ selectedEmployee?.date_of_birth }}
                 </div>
-                <div v-if="loading" class="col-start-3 col-span-4"><Skeleton /></div>
+                <div v-if="loading" :class="dataStyle"><Skeleton /></div>
               </div>
-              <div class="grid grid-cols-6 items-center">
-                <div class="col-start-1 col-span-2 font-semibold">Posisi</div>
-                <div v-if="!loading" class="col-start-3 col-span-4">
+              <div :class="containerStyle">
+                <div :class="titleStyle">Posisi</div>
+                <div v-if="!loading" :class="dataStyle">
                   {{ selectedEmployee?.position }}
                 </div>
-                <div v-if="loading" class="col-start-3 col-span-4"><Skeleton /></div>
+                <div v-if="loading" :class="dataStyle"><Skeleton /></div>
               </div>
-              <div class="grid grid-cols-6 items-center">
-                <div class="col-start-1 col-span-2 font-semibold">Klinik Cabang</div>
-                <div v-if="!loading" class="col-start-3 col-span-4">
+              <div :class="containerStyle">
+                <div :class="titleStyle">Klinik Cabang</div>
+                <div v-if="!loading" :class="dataStyle">
                   Klinik Cabang {{ selectedEmployee?.branch?.name }}
                 </div>
-                <div v-if="loading" class="col-start-3 col-span-4"><Skeleton /></div>
+                <div v-if="loading" :class="dataStyle"><Skeleton /></div>
               </div>
             </div>
           </div>
@@ -105,9 +130,9 @@ onMounted(async () => {
         <div class="row-span-3 bg-white p-5 sm:p-3 border border-gray-100 shadow-md rounded-md">
           <div>
             <div class="w-full flex flex-col gap-3 py-3 px-4">
-              <div class="grid grid-cols-6 items-center">
-                <div class="col-start-1 col-span-2 font-semibold">No. Telepon</div>
-                <div v-if="!loading" class="col-start-3 col-span-4">
+              <div :class="containerStyle">
+                <div :class="titleStyle">No. Telepon</div>
+                <div v-if="!loading" :class="dataStyle">
                   <InputText
                     :class="onFocus()"
                     class="w-full border-gray-400 rounded-md"
@@ -115,33 +140,33 @@ onMounted(async () => {
                   ></InputText>
                 </div>
 
-                <div v-if="loading" class="col-start-3 col-span-4">
+                <div v-if="loading" :class="dataStyle">
                   <Skeleton class="h-[40px]" />
                 </div>
               </div>
-              <div class="grid grid-cols-6 items-center">
-                <div class="col-start-1 col-span-2 font-semibold">E-mail</div>
-                <div v-if="!loading" class="col-start-3 col-span-4">
+              <div :class="containerStyle">
+                <div :class="titleStyle">E-mail</div>
+                <div v-if="!loading" :class="dataStyle">
                   <InputText
                     :class="onFocus()"
                     class="w-full border-gray-400 rounded-md"
                     placeholder="axx2092@gmail.com"
                   ></InputText>
                 </div>
-                <div v-if="loading" class="col-start-3 col-span-4">
+                <div v-if="loading" :class="dataStyle">
                   <Skeleton class="h-[40px]" />
                 </div>
               </div>
-              <div class="grid grid-cols-6 items-center">
-                <div class="col-start-1 col-span-2 font-semibold">Alamat</div>
-                <div v-if="!loading" class="col-start-3 col-span-4">
+              <div :class="containerStyle">
+                <div :class="titleStyle">Alamat</div>
+                <div v-if="!loading" :class="dataStyle">
                   <Textarea
                     :class="onFocus()"
                     placeholder="Jl. ABC no.1, Kelurahan xxx, Kecamatan xxx, Kota Bandung"
                     class="border border-gray-400 rounded-md w-full p-[10px] outline-none"
                   ></Textarea>
                 </div>
-                <div v-if="loading" class="col-start-3 col-span-4">
+                <div v-if="loading" :class="dataStyle">
                   <Skeleton class="h-[60px]" />
                 </div>
               </div>

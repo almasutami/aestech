@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import NavigationSidebar from '@/components/navigation-sidebar.vue'
 import SvgIcon from '../../node_modules/@jamescoyle/vue-icon/lib/svg-icon.vue'
 import { mdiHospitalBuilding, mdiBell, mdiHelpCircle } from '../../node_modules/@mdi/js'
@@ -53,6 +53,12 @@ const items = ref([
 const toggle = (event) => {
   menu.value.toggle(event)
 }
+
+let windowWidth = ref(window.innerWidth)
+
+const onWidthChange = () => (windowWidth.value = window.innerWidth)
+onMounted(() => window.addEventListener('resize', onWidthChange))
+onUnmounted(() => window.removeEventListener('resize', onWidthChange))
 </script>
 
 <template>
@@ -111,6 +117,7 @@ const toggle = (event) => {
       <div>
         <Button class="bg-inherit text-inherit p-0" @click="toggle">
           <SvgIcon
+            :size="windowWidth < 500 ? '18px' : '24px'"
             type="mdi"
             :path="mdiBell"
             aria-haspopup="true"
@@ -156,20 +163,25 @@ const toggle = (event) => {
           </template>
         </Menu>
       </div>
-      <div>
+      <div v-if="windowWidth > 445">
         <Button class="bg-inherit text-inherit p-0">
-          <SvgIcon type="mdi" :path="mdiHelpCircle"></SvgIcon
+          <SvgIcon
+            type="mdi"
+            :path="mdiHelpCircle"
+            :size="windowWidth < 500 ? '18px' : '24px'"
+          ></SvgIcon
         ></Button>
       </div>
       <div>
         <img
           alt="user header"
           :src="'https://i.ibb.co/hDMmmZD/foto-almas.jpg'"
-          class="h-[48px] w-[48px] rounded-full"
+          :class="windowWidth < 500 ? 'h-[32px] w-[32px]' : 'h-[48px] w-[48px]'"
+          class="rounded-full"
           style="object-fit: cover"
         />
       </div>
-      <div class="flex flex-col text-sm sm:hidden">
+      <div v-if="windowWidth > 620" class="flex flex-col text-sm max-[498px]:hidden">
         <div class="font-semibold">Almas Utami</div>
         <div>Frontend Developer</div>
       </div>

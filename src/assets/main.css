@@ -225,6 +225,27 @@ input.p-inputtext.p-component {
   color: #c7c7c7;
 }
 
+#account_overlay_menu.p-menu.p-component.p-menu-overlay {
+  border-radius: 10px;
+  border: none;
+  box-shadow: rgba(0, 0, 0, 0.17) 0px 0px 10px;
+  width: 200px;
+  z-index: 1000;
+  background-color: white;
+}
+
+#account_overlay_menu_list.p-menu-list.p-reset {
+  padding: 0px 0px 10px 0px;
+  background-color: white;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 10px;
+  z-index: 1000;
+  border-radius: 10px;
+}
+
 .p-menu.p-component.p-menu-overlay {
   border-radius: 10px;
   border: none;

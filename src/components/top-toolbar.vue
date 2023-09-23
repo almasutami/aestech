@@ -109,13 +109,14 @@ const toggle = (event) => {
     </div>
     <div class="flex flex-row gap-[20px] items-center">
       <div>
-        <SvgIcon
-          type="mdi"
-          :path="mdiBell"
-          @click="toggle"
-          aria-haspopup="true"
-          aria-controls="overlay_menu"
-        ></SvgIcon>
+        <Button class="bg-inherit text-inherit p-0" @click="toggle">
+          <SvgIcon
+            type="mdi"
+            :path="mdiBell"
+            aria-haspopup="true"
+            aria-controls="overlay_menu"
+          ></SvgIcon
+        ></Button>
         <Menu
           style="position: absolute; top: 80px; right: 10px; left: auto"
           ref="menu"
@@ -156,7 +157,9 @@ const toggle = (event) => {
         </Menu>
       </div>
       <div>
-        <SvgIcon type="mdi" :path="mdiHelpCircle"></SvgIcon>
+        <Button class="bg-inherit text-inherit p-0">
+          <SvgIcon type="mdi" :path="mdiHelpCircle"></SvgIcon
+        ></Button>
       </div>
       <div>
         <img
